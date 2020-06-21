@@ -9,7 +9,7 @@ namespace Youtube_Music
     static class Program
     {
         /// <summary>
-        /// Der Haupteinstiegspunkt für die Anwendung.
+        /// The entry point of the application
         /// </summary>
         [STAThread]
         static void Main()
