@@ -2,9 +2,9 @@
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
-// Allgemeine Informationen über eine Assembly werden über die folgenden
-// Attribute gesteuert. Ändern Sie diese Attributwerte, um die Informationen zu ändern,
-// die einer Assembly zugeordnet sind.
+// General information about an assemnbly are controlled using the following
+// attributed. Change the attribute values to change the information
+// assigned to an assembly
 [assembly: AssemblyTitle("Youtube Music")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
@@ -14,23 +14,23 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
-// Durch Festlegen von ComVisible auf FALSE werden die Typen in dieser Assembly
-// für COM-Komponenten unsichtbar.  Wenn Sie auf einen Typ in dieser Assembly von
-// COM aus zugreifen müssen, sollten Sie das ComVisible-Attribut für diesen Typ auf "True" festlegen.
+// By setting ComVisible to FALSE the types of this assembly
+// are going to be made invisible. If you want to access a type in this assembly
+// in COM, you should set the ComVisible attribute for this type to "True".
 [assembly: ComVisible(false)]
 
-// Die folgende GUID bestimmt die ID der Typbibliothek, wenn dieses Projekt für COM verfügbar gemacht wird
+// The following GUID determines the ID of the type library if this project will be available for COM
 [assembly: Guid("d556c3b6-8520-4652-b978-d225650798df")]
 
-// Versionsinformationen für eine Assembly bestehen aus den folgenden vier Werten:
+// Version information for an assembly consists of the following values
 //
-//      Hauptversion
-//      Nebenversion
-//      Buildnummer
+//      Main version
+//      Side version
+//      Build number
 //      Revision
 //
-// Sie können alle Werte angeben oder Standardwerte für die Build- und Revisionsnummern verwenden,
-// indem Sie "*" wie unten gezeigt eingeben:
+// You can set all values or use default values for build number and revision number
+// by typing "*" as shown below
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
