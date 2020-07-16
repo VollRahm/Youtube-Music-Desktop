@@ -1,54 +1,44 @@
 ﻿using CefSharp;
 using CefSharp.WinForms;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
 using System.Windows.Forms;
-using System.Runtime.InteropServices;
+using Youtube_Music.Misc;
 
-
-namespace Youtube_Music
+namespace Youtube_Music.Forms
 {
     public partial class MainForm : Form
     {
-        [DllImport("kernel32.dll")]
-        public static extern bool AllocConsole();
-
-        [DllImport("winmm.dll")]
-        public static extern int waveOutGetVolume(IntPtr hwo, out uint dwVolume);
-
-        [DllImport("winmm.dll")]
-        public static extern int waveOutSetVolume(IntPtr hwo, uint dwVolume);
-
         ChromiumWebBrowser cef;
         string lastAddress;
+        SettingsForm settings;
 
         public MainForm()
         {
             InitializeComponent();
-            //AllocConsole();
+            SetupChrome();
+            settings = new SettingsForm(cef);
+            Native.waveOutGetVolume(IntPtr.Zero, out uint CurrVol);
+            ushort CalcVol = (ushort)(CurrVol & 0x0000ffff);
+            volumeTrackBar.Value = CalcVol / (ushort.MaxValue / 100);
+        }
+
+        private void SetupChrome()
+        {
             CefSettings settings = new CefSettings();
-            settings.UserAgent = "VollRahms YT Music for Desktop";
             settings.CefCommandLineArgs.Add("--user-agent", "Mozilla/5.0 Gecko/20100101 Firefox/70.0");
             settings.CefCommandLineArgs.Add("disable-gpu", "1");
             settings.CefCommandLineArgs.Add("disable-gpu-vsync", "1");
             settings.CefCommandLineArgs.Add("disable-gpu-compositing", "1");
-            settings.CachePath = "cache";
+            settings.CefCommandLineArgs.Add("enable-media-stream", "1");
+            settings.CachePath = new DirectoryInfo("cache").FullName;
             Cef.Initialize(settings);
             cef = new ChromiumWebBrowser("https://music.youtube.com/");
             this.Controls.Add(cef);
             cef.Dock = DockStyle.Fill;
             cef.MenuHandler = new CustomContextMenu();
             cef.AddressChanged += new EventHandler<AddressChangedEventArgs>(OnAddressChanged);
-
-            waveOutGetVolume(IntPtr.Zero, out uint CurrVol);
-            ushort CalcVol = (ushort)(CurrVol & 0x0000ffff);
-            volumeTrackBar.Value = CalcVol / (ushort.MaxValue / 100);
+            cef.LifeSpanHandler = new CustomPopupHandler();
         }
 
         private void OnAddressChanged(object sender, AddressChangedEventArgs e)
@@ -65,7 +55,16 @@ namespace Youtube_Music
         {
             int NewVolume = ((ushort.MaxValue / 100) * volumeTrackBar.Value);
             uint NewVolumeAllChannels = (((uint)NewVolume & 0x0000ffff) | ((uint)NewVolume << 16));
-            waveOutSetVolume(IntPtr.Zero, NewVolumeAllChannels);
+            Native.waveOutSetVolume(IntPtr.Zero, NewVolumeAllChannels);
+        }
+
+        bool firstTime = true;
+        private void SettingsBtn_Click(object sender, EventArgs e)
+        {
+            settings.Show();
+            if(!firstTime)
+            settings.SettingsForm_Shown(this, null);
+            firstTime = false;
         }
     }
 }

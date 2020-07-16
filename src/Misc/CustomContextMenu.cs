@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CefSharp;
+﻿using CefSharp;
 
-namespace Youtube_Music
+namespace Youtube_Music.Misc
 {
     public class CustomContextMenu : CefSharp.IContextMenuHandler
     {

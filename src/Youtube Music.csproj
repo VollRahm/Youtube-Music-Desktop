@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="packages\CefSharp.WinForms.75.1.143\build\CefSharp.WinForms.props" Condition="Exists('packages\CefSharp.WinForms.75.1.143\build\CefSharp.WinForms.props')" />
-  <Import Project="packages\CefSharp.Common.75.1.143\build\CefSharp.Common.props" Condition="Exists('packages\CefSharp.Common.75.1.143\build\CefSharp.Common.props')" />
-  <Import Project="packages\cef.redist.x86.75.1.14\build\cef.redist.x86.props" Condition="Exists('packages\cef.redist.x86.75.1.14\build\cef.redist.x86.props')" />
-  <Import Project="packages\cef.redist.x64.75.1.14\build\cef.redist.x64.props" Condition="Exists('packages\cef.redist.x64.75.1.14\build\cef.redist.x64.props')" />
+  <Import Project="packages\CefSharp.WinForms.81.3.100\build\CefSharp.WinForms.props" Condition="Exists('packages\CefSharp.WinForms.81.3.100\build\CefSharp.WinForms.props')" />
+  <Import Project="packages\CefSharp.Common.81.3.100\build\CefSharp.Common.props" Condition="Exists('packages\CefSharp.Common.81.3.100\build\CefSharp.Common.props')" />
+  <Import Project="packages\cef.redist.x86.81.3.10\build\cef.redist.x86.props" Condition="Exists('packages\cef.redist.x86.81.3.10\build\cef.redist.x86.props')" />
+  <Import Project="packages\cef.redist.x64.81.3.10\build\cef.redist.x64.props" Condition="Exists('packages\cef.redist.x64.81.3.10\build\cef.redist.x64.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -11,7 +11,7 @@
     <ProjectGuid>{D556C3B6-8520-4652-B978-D225650798DF}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>Youtube_Music</RootNamespace>
-    <AssemblyName>Youtube Music</AssemblyName>
+    <AssemblyName>sYoutube Music</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -77,17 +77,49 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CustomContextMenu.cs" />
-    <Compile Include="MainForm.cs">
+    <Compile Include="Forms\PopupWindow.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MainForm.Designer.cs">
+    <Compile Include="Forms\PopupWindow.Designer.cs">
+      <DependentUpon>PopupWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\SettingsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\SettingsForm.Designer.cs">
+      <DependentUpon>SettingsForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MinimalJson\JsonArray.cs" />
+    <Compile Include="MinimalJson\JsonLiteral.cs" />
+    <Compile Include="MinimalJson\JsonNumber.cs" />
+    <Compile Include="MinimalJson\JsonObject.cs" />
+    <Compile Include="MinimalJson\JsonParser.cs" />
+    <Compile Include="MinimalJson\JsonString.cs" />
+    <Compile Include="MinimalJson\JsonValue.cs" />
+    <Compile Include="MinimalJson\JsonWriter.cs" />
+    <Compile Include="MinimalJson\ParseException.cs" />
+    <Compile Include="MinimalJson\ReadOnlyDictionary.cs" />
+    <Compile Include="Misc\CEFOutputDevice.cs" />
+    <Compile Include="Misc\CustomContextMenu.cs" />
+    <Compile Include="Forms\MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Misc\CustomPopupHandler.cs" />
+    <Compile Include="Misc\Native.cs" />
+    <Compile Include="Misc\Settings.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="MainForm.resx">
+    <EmbeddedResource Include="Forms\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\PopupWindow.resx">
+      <DependentUpon>PopupWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\SettingsForm.resx">
+      <DependentUpon>SettingsForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -118,15 +150,15 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
-      <ErrorText>Dieses Projekt verweist auf mindestens ein NuGet-Paket, das auf diesem Computer fehlt. Verwenden Sie die Wiederherstellung von NuGet-Paketen, um die fehlenden Dateien herunterzuladen. Weitere Informationen finden Sie unter "http://go.microsoft.com/fwlink/?LinkID=322105". Die fehlende Datei ist "{0}".</ErrorText>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('packages\cef.redist.x64.75.1.14\build\cef.redist.x64.props')" Text="$([System.String]::Format('$(ErrorText)', 'packages\cef.redist.x64.75.1.14\build\cef.redist.x64.props'))" />
-    <Error Condition="!Exists('packages\cef.redist.x86.75.1.14\build\cef.redist.x86.props')" Text="$([System.String]::Format('$(ErrorText)', 'packages\cef.redist.x86.75.1.14\build\cef.redist.x86.props'))" />
-    <Error Condition="!Exists('packages\CefSharp.Common.75.1.143\build\CefSharp.Common.props')" Text="$([System.String]::Format('$(ErrorText)', 'packages\CefSharp.Common.75.1.143\build\CefSharp.Common.props'))" />
-    <Error Condition="!Exists('packages\CefSharp.Common.75.1.143\build\CefSharp.Common.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\CefSharp.Common.75.1.143\build\CefSharp.Common.targets'))" />
-    <Error Condition="!Exists('packages\CefSharp.WinForms.75.1.143\build\CefSharp.WinForms.props')" Text="$([System.String]::Format('$(ErrorText)', 'packages\CefSharp.WinForms.75.1.143\build\CefSharp.WinForms.props'))" />
-    <Error Condition="!Exists('packages\CefSharp.WinForms.75.1.143\build\CefSharp.WinForms.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\CefSharp.WinForms.75.1.143\build\CefSharp.WinForms.targets'))" />
+    <Error Condition="!Exists('packages\cef.redist.x64.81.3.10\build\cef.redist.x64.props')" Text="$([System.String]::Format('$(ErrorText)', 'packages\cef.redist.x64.81.3.10\build\cef.redist.x64.props'))" />
+    <Error Condition="!Exists('packages\cef.redist.x86.81.3.10\build\cef.redist.x86.props')" Text="$([System.String]::Format('$(ErrorText)', 'packages\cef.redist.x86.81.3.10\build\cef.redist.x86.props'))" />
+    <Error Condition="!Exists('packages\CefSharp.Common.81.3.100\build\CefSharp.Common.props')" Text="$([System.String]::Format('$(ErrorText)', 'packages\CefSharp.Common.81.3.100\build\CefSharp.Common.props'))" />
+    <Error Condition="!Exists('packages\CefSharp.Common.81.3.100\build\CefSharp.Common.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\CefSharp.Common.81.3.100\build\CefSharp.Common.targets'))" />
+    <Error Condition="!Exists('packages\CefSharp.WinForms.81.3.100\build\CefSharp.WinForms.props')" Text="$([System.String]::Format('$(ErrorText)', 'packages\CefSharp.WinForms.81.3.100\build\CefSharp.WinForms.props'))" />
+    <Error Condition="!Exists('packages\CefSharp.WinForms.81.3.100\build\CefSharp.WinForms.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\CefSharp.WinForms.81.3.100\build\CefSharp.WinForms.targets'))" />
   </Target>
-  <Import Project="packages\CefSharp.Common.75.1.143\build\CefSharp.Common.targets" Condition="Exists('packages\CefSharp.Common.75.1.143\build\CefSharp.Common.targets')" />
-  <Import Project="packages\CefSharp.WinForms.75.1.143\build\CefSharp.WinForms.targets" Condition="Exists('packages\CefSharp.WinForms.75.1.143\build\CefSharp.WinForms.targets')" />
+  <Import Project="packages\CefSharp.Common.81.3.100\build\CefSharp.Common.targets" Condition="Exists('packages\CefSharp.Common.81.3.100\build\CefSharp.Common.targets')" />
+  <Import Project="packages\CefSharp.WinForms.81.3.100\build\CefSharp.WinForms.targets" Condition="Exists('packages\CefSharp.WinForms.81.3.100\build\CefSharp.WinForms.targets')" />
 </Project>
