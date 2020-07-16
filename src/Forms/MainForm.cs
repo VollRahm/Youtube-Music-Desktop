@@ -12,15 +12,13 @@ namespace Youtube_Music.Forms
         ChromiumWebBrowser cef;
         string lastAddress;
         SettingsForm settings;
+        Timer VolumeBarTimer = new Timer();
 
         public MainForm()
         {
             InitializeComponent();
             SetupChrome();
             settings = new SettingsForm(cef);
-            Native.waveOutGetVolume(IntPtr.Zero, out uint CurrVol);
-            ushort CalcVol = (ushort)(CurrVol & 0x0000ffff);
-            volumeTrackBar.Value = CalcVol / (ushort.MaxValue / 100);
         }
 
         private void SetupChrome()
@@ -39,6 +37,10 @@ namespace Youtube_Music.Forms
             cef.MenuHandler = new CustomContextMenu();
             cef.AddressChanged += new EventHandler<AddressChangedEventArgs>(OnAddressChanged);
             cef.LifeSpanHandler = new CustomPopupHandler();
+
+            VolumeBarTimer.Tick += new EventHandler(UpdateVolumeBar);
+            VolumeBarTimer.Interval = 500;
+            VolumeBarTimer.Start();
         }
 
         private void OnAddressChanged(object sender, AddressChangedEventArgs e)
@@ -51,11 +53,23 @@ namespace Youtube_Music.Forms
             lastAddress = e.Address;
         }
 
-        private void volumeTrackBar_ValueChanged(object sender, EventArgs e)
+        private async void volumeTrackBar_ValueChanged(object sender, EventArgs e)
         {
-            int NewVolume = ((ushort.MaxValue / 100) * volumeTrackBar.Value);
-            uint NewVolumeAllChannels = (((uint)NewVolume & 0x0000ffff) | ((uint)NewVolume << 16));
-            Native.waveOutSetVolume(IntPtr.Zero, NewVolumeAllChannels);
+            if(cef.CanExecuteJavascriptInMainFrame)
+            await settings.cefAudio.SetVolume(volumeTrackBar.Value);
+        }
+
+        private async void UpdateVolumeBar(object sender, EventArgs e)
+        {
+            if (cef.CanExecuteJavascriptInMainFrame)
+            {
+                var volume = await settings.cefAudio.GetVolume();
+                if(volume != -1)
+                {
+                    volumeTrackBar.Enabled = true;
+                    volumeTrackBar.Value = volume;
+                }
+            }
         }
 
         bool firstTime = true;

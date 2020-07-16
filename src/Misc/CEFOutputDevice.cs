@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Youtube_Music.Forms;
 
 namespace Youtube_Music.Misc
 {
@@ -35,8 +36,28 @@ namespace Youtube_Music.Misc
                 await ytmPlayer.setSinkId('%SINK%');
             })();";
 
-        private const string CHECKPLAYER_SCRIPT = @"(function(){
+        private const string PLAYERTIME_SCRIPT = @"(function(){
                     return document.getElementsByTagName('video')[0].getDuration();
+            })();";
+
+        private const string CURRENTPLAYERTIME_SCRIPT = @"(function(){
+                    return document.getElementsByTagName('video')[0].getCurrentTime();
+            })();";
+
+        private const string SONGNAME_SCRIPT = @"(function(){
+                    return document.getElementsByClassName('title style-scope ytmusic-player-bar')[0].innerHTML;
+            })();";
+
+        private const string AUTHOR_SCRIPT = @"(function(){
+                    return document.getElementsByClassName('byline style-scope ytmusic-player-bar complex-string')[0].children[0].innerHTML;
+            })();";
+
+        private const string SETVOLUME_SCRIPT = @"(function(){
+                   document.getElementById('volume-slider').value = %%VALUE%%;
+            })();";
+
+        private const string GETVOLUME_SCRIPT = @"(function(){
+                   return document.getElementById('volume-slider').value;
             })();";
 
         public CEFOutputDevice(ChromiumWebBrowser cef)
@@ -68,18 +89,58 @@ namespace Youtube_Music.Misc
 
         public async Task SetSink(AudioOutput sink)
         {
-            object playerState = null;
-            while(playerState == null)
-            {
-                await Task.Delay(10);
-                playerState = (await cef.EvaluateScriptAsync(CHECKPLAYER_SCRIPT)).Result;
-            }
-            while (playerState.ToString() == "0")
-            {
+            while (await PlaybackTime() == 0)
                 await Task.Delay(5);
-                playerState = (await cef.EvaluateScriptAsync(CHECKPLAYER_SCRIPT)).Result;
-            }
-            var result =await cef.EvaluateScriptAsync(SETSINK_SCRIPT.Replace("%SINK%", sink.DeviceId));
+
+            await cef.EvaluateScriptAsync(SETSINK_SCRIPT.Replace("%SINK%", sink.DeviceId));
+        }
+
+        public async Task<float> PlaybackTime()
+        {
+            object playerState = (await cef.EvaluateScriptAsync(PLAYERTIME_SCRIPT)).Result;
+            if (playerState == null) return 0;
+            if (float.TryParse(playerState.ToString(), out float time))
+                return time;
+            else return 0;
+        }
+
+        public async Task<float> CurrentPlaybackTime()
+        {
+            object playerState = (await cef.EvaluateScriptAsync(CURRENTPLAYERTIME_SCRIPT)).Result;
+            if (playerState == null) return 0;
+            if (float.TryParse(playerState.ToString(), out float time))
+                return time;
+            else return 0;
+        }
+
+        public async Task<string> SongName()
+        {
+            if (await PlaybackTime() == 0) return "";
+            object playerState = (await cef.EvaluateScriptAsync(SONGNAME_SCRIPT)).Result;
+            if (playerState == null) return "";
+            return playerState.ToString();
+        }
+
+        public async Task<string> SongAuthor()
+        {
+            if (await PlaybackTime() == 0) return "";
+            object playerState = (await cef.EvaluateScriptAsync(AUTHOR_SCRIPT)).Result;
+            if (playerState == null) return "";
+            return playerState.ToString();
+        }
+
+        public async Task SetVolume(int volume)
+        {
+            await cef.EvaluateScriptAsync(SETVOLUME_SCRIPT.Replace("%%VALUE%%", volume.ToString()));
+        }
+
+        public async Task<int> GetVolume()
+        {
+            object playerState = (await cef.EvaluateScriptAsync(GETVOLUME_SCRIPT)).Result;
+            if (playerState == null) return -1;
+            if (int.TryParse(playerState.ToString(), out int time))
+                return time;
+            else return -1;
         }
         
     }

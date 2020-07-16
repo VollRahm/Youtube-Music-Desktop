@@ -5,13 +5,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using MinimalJson;
+using Newtonsoft.Json;
 
 namespace Youtube_Music.Misc
 {
     public class Settings
     {
-        public string outputDevice;
+        public string OutputDevice;
+        public bool EnableRichPresence = true;
 
         public void Store(string path)
         {
@@ -21,9 +22,8 @@ namespace Youtube_Music.Misc
             }
             try
             {
-                var json = new JsonObject();
-                json.set("outputDevice", outputDevice);
-                File.WriteAllText(path, json.ToString());
+                var jsonString = JsonConvert.SerializeObject(this);
+                File.WriteAllText(path, jsonString);
             }
             catch
             {
@@ -37,8 +37,9 @@ namespace Youtube_Music.Misc
             {
                 try
                 {
-                    var json = JsonObject.readFrom(File.ReadAllText(path));
-                    outputDevice = json.get("outputDevice").asString();
+                    var jsonData = JsonConvert.DeserializeObject<Settings>(File.ReadAllText(path));
+                    EnableRichPresence = jsonData.EnableRichPresence;
+                    OutputDevice = jsonData.OutputDevice;
                 }
                 catch
                 {

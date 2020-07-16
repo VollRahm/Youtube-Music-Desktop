@@ -31,6 +31,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SettingsForm));
             this._label1 = new System.Windows.Forms.Label();
             this.outDvcCb = new System.Windows.Forms.ComboBox();
+            this.rpcCb = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // _label1
@@ -52,11 +53,22 @@
             this.outDvcCb.TabIndex = 1;
             this.outDvcCb.SelectedIndexChanged += new System.EventHandler(this.outDvcCb_SelectedIndexChanged);
             // 
+            // rpcCb
+            // 
+            this.rpcCb.AutoSize = true;
+            this.rpcCb.Location = new System.Drawing.Point(12, 50);
+            this.rpcCb.Name = "rpcCb";
+            this.rpcCb.Size = new System.Drawing.Size(135, 17);
+            this.rpcCb.TabIndex = 3;
+            this.rpcCb.Text = "Discord Rich Presence";
+            this.rpcCb.UseVisualStyleBackColor = true;
+            // 
             // SettingsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(428, 73);
+            this.ClientSize = new System.Drawing.Size(428, 79);
+            this.Controls.Add(this.rpcCb);
             this.Controls.Add(this.outDvcCb);
             this.Controls.Add(this._label1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
@@ -77,5 +89,6 @@
 
         private System.Windows.Forms.Label _label1;
         private System.Windows.Forms.ComboBox outDvcCb;
+        private System.Windows.Forms.CheckBox rpcCb;
     }
 }

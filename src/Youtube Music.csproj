@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="packages\CefSharp.WinForms.81.3.100\build\CefSharp.WinForms.props" Condition="Exists('packages\CefSharp.WinForms.81.3.100\build\CefSharp.WinForms.props')" />
-  <Import Project="packages\CefSharp.Common.81.3.100\build\CefSharp.Common.props" Condition="Exists('packages\CefSharp.Common.81.3.100\build\CefSharp.Common.props')" />
-  <Import Project="packages\cef.redist.x86.81.3.10\build\cef.redist.x86.props" Condition="Exists('packages\cef.redist.x86.81.3.10\build\cef.redist.x86.props')" />
-  <Import Project="packages\cef.redist.x64.81.3.10\build\cef.redist.x64.props" Condition="Exists('packages\cef.redist.x64.81.3.10\build\cef.redist.x64.props')" />
+  <Import Project="packages\CefSharp.WinForms.83.4.20\build\CefSharp.WinForms.props" Condition="Exists('packages\CefSharp.WinForms.83.4.20\build\CefSharp.WinForms.props')" />
+  <Import Project="packages\CefSharp.Common.83.4.20\build\CefSharp.Common.props" Condition="Exists('packages\CefSharp.Common.83.4.20\build\CefSharp.Common.props')" />
+  <Import Project="packages\cef.redist.x86.83.4.2\build\cef.redist.x86.props" Condition="Exists('packages\cef.redist.x86.83.4.2\build\cef.redist.x86.props')" />
+  <Import Project="packages\cef.redist.x64.83.4.2\build\cef.redist.x64.props" Condition="Exists('packages\cef.redist.x64.83.4.2\build\cef.redist.x64.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -11,7 +11,7 @@
     <ProjectGuid>{D556C3B6-8520-4652-B978-D225650798DF}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>Youtube_Music</RootNamespace>
-    <AssemblyName>sYoutube Music</AssemblyName>
+    <AssemblyName>Youtube Music</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -63,7 +63,18 @@
   <PropertyGroup>
     <ApplicationIcon>icon.ico</ApplicationIcon>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <PlatformTarget>x86</PlatformTarget>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <PlatformTarget>x86</PlatformTarget>
+    <OutputPath>bin\x86\Release\</OutputPath>
+  </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -77,6 +88,62 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DiscordRPC\Configuration.cs" />
+    <Compile Include="DiscordRPC\Converters\EnumSnakeCaseConverter.cs" />
+    <Compile Include="DiscordRPC\Converters\EnumValueAttribute.cs" />
+    <Compile Include="DiscordRPC\DiscordRpcClient.cs" />
+    <Compile Include="DiscordRPC\Events.cs" />
+    <Compile Include="DiscordRPC\EventType.cs" />
+    <Compile Include="DiscordRPC\Exceptions\BadPresenceException.cs" />
+    <Compile Include="DiscordRPC\Exceptions\InvalidConfigurationException.cs" />
+    <Compile Include="DiscordRPC\Exceptions\InvalidPipeException.cs" />
+    <Compile Include="DiscordRPC\Exceptions\StringOutOfRangeException.cs" />
+    <Compile Include="DiscordRPC\Exceptions\UninitializedException.cs" />
+    <Compile Include="DiscordRPC\Helper\BackoffDelay.cs" />
+    <Compile Include="DiscordRPC\Helper\StringTools.cs" />
+    <Compile Include="DiscordRPC\IO\Handshake.cs" />
+    <Compile Include="DiscordRPC\IO\INamedPipeClient.cs" />
+    <Compile Include="DiscordRPC\IO\ManagedNamedPipeClient.cs" />
+    <Compile Include="DiscordRPC\IO\Opcode.cs" />
+    <Compile Include="DiscordRPC\IO\PipeFrame.cs" />
+    <Compile Include="DiscordRPC\Logging\ConsoleLogger.cs" />
+    <Compile Include="DiscordRPC\Logging\FileLogger.cs" />
+    <Compile Include="DiscordRPC\Logging\ILogger.cs" />
+    <Compile Include="DiscordRPC\Logging\LogLevel.cs" />
+    <Compile Include="DiscordRPC\Logging\NullLogger.cs" />
+    <Compile Include="DiscordRPC\Message\CloseMessage.cs" />
+    <Compile Include="DiscordRPC\Message\ConnectionEstablishedMessage.cs" />
+    <Compile Include="DiscordRPC\Message\ConnectionFailedMessage.cs" />
+    <Compile Include="DiscordRPC\Message\ErrorMessage.cs" />
+    <Compile Include="DiscordRPC\Message\IMessage.cs" />
+    <Compile Include="DiscordRPC\Message\JoinMessage.cs" />
+    <Compile Include="DiscordRPC\Message\JoinRequestMessage.cs" />
+    <Compile Include="DiscordRPC\Message\MessageType.cs" />
+    <Compile Include="DiscordRPC\Message\PresenceMessage.cs" />
+    <Compile Include="DiscordRPC\Message\ReadyMessage.cs" />
+    <Compile Include="DiscordRPC\Message\SpectateMessage.cs" />
+    <Compile Include="DiscordRPC\Message\SubscribeMessage.cs" />
+    <Compile Include="DiscordRPC\Message\UnsubscribeMsesage.cs" />
+    <Compile Include="DiscordRPC\Registry\IUriSchemeCreator.cs" />
+    <Compile Include="DiscordRPC\Registry\MacUriSchemeCreator.cs" />
+    <Compile Include="DiscordRPC\Registry\UnixUriSchemeCreator.cs" />
+    <Compile Include="DiscordRPC\Registry\UriScheme.cs" />
+    <Compile Include="DiscordRPC\Registry\WindowsUriSchemeCreator.cs" />
+    <Compile Include="DiscordRPC\RichPresence.cs" />
+    <Compile Include="DiscordRPC\RPC\Commands\CloseCommand.cs" />
+    <Compile Include="DiscordRPC\RPC\Commands\ICommand.cs" />
+    <Compile Include="DiscordRPC\RPC\Commands\PresenceCommand.cs" />
+    <Compile Include="DiscordRPC\RPC\Commands\RespondCommand.cs" />
+    <Compile Include="DiscordRPC\RPC\Commands\SubscribeCommand.cs" />
+    <Compile Include="DiscordRPC\RPC\Payload\ClosePayload.cs" />
+    <Compile Include="DiscordRPC\RPC\Payload\Command.cs" />
+    <Compile Include="DiscordRPC\RPC\Payload\IPayload.cs" />
+    <Compile Include="DiscordRPC\RPC\Payload\PayloadArgument.cs" />
+    <Compile Include="DiscordRPC\RPC\Payload\PayloadEvent.cs" />
+    <Compile Include="DiscordRPC\RPC\Payload\ServerEvent.cs" />
+    <Compile Include="DiscordRPC\RPC\RpcConnection.cs" />
+    <Compile Include="DiscordRPC\User.cs" />
+    <Compile Include="DiscordRPC\Web\WebRPC.cs" />
     <Compile Include="Forms\PopupWindow.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -89,16 +156,6 @@
     <Compile Include="Forms\SettingsForm.Designer.cs">
       <DependentUpon>SettingsForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="MinimalJson\JsonArray.cs" />
-    <Compile Include="MinimalJson\JsonLiteral.cs" />
-    <Compile Include="MinimalJson\JsonNumber.cs" />
-    <Compile Include="MinimalJson\JsonObject.cs" />
-    <Compile Include="MinimalJson\JsonParser.cs" />
-    <Compile Include="MinimalJson\JsonString.cs" />
-    <Compile Include="MinimalJson\JsonValue.cs" />
-    <Compile Include="MinimalJson\JsonWriter.cs" />
-    <Compile Include="MinimalJson\ParseException.cs" />
-    <Compile Include="MinimalJson\ReadOnlyDictionary.cs" />
     <Compile Include="Misc\CEFOutputDevice.cs" />
     <Compile Include="Misc\CustomContextMenu.cs" />
     <Compile Include="Forms\MainForm.cs">
@@ -152,13 +209,13 @@
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('packages\cef.redist.x64.81.3.10\build\cef.redist.x64.props')" Text="$([System.String]::Format('$(ErrorText)', 'packages\cef.redist.x64.81.3.10\build\cef.redist.x64.props'))" />
-    <Error Condition="!Exists('packages\cef.redist.x86.81.3.10\build\cef.redist.x86.props')" Text="$([System.String]::Format('$(ErrorText)', 'packages\cef.redist.x86.81.3.10\build\cef.redist.x86.props'))" />
-    <Error Condition="!Exists('packages\CefSharp.Common.81.3.100\build\CefSharp.Common.props')" Text="$([System.String]::Format('$(ErrorText)', 'packages\CefSharp.Common.81.3.100\build\CefSharp.Common.props'))" />
-    <Error Condition="!Exists('packages\CefSharp.Common.81.3.100\build\CefSharp.Common.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\CefSharp.Common.81.3.100\build\CefSharp.Common.targets'))" />
-    <Error Condition="!Exists('packages\CefSharp.WinForms.81.3.100\build\CefSharp.WinForms.props')" Text="$([System.String]::Format('$(ErrorText)', 'packages\CefSharp.WinForms.81.3.100\build\CefSharp.WinForms.props'))" />
-    <Error Condition="!Exists('packages\CefSharp.WinForms.81.3.100\build\CefSharp.WinForms.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\CefSharp.WinForms.81.3.100\build\CefSharp.WinForms.targets'))" />
+    <Error Condition="!Exists('packages\cef.redist.x64.83.4.2\build\cef.redist.x64.props')" Text="$([System.String]::Format('$(ErrorText)', 'packages\cef.redist.x64.83.4.2\build\cef.redist.x64.props'))" />
+    <Error Condition="!Exists('packages\cef.redist.x86.83.4.2\build\cef.redist.x86.props')" Text="$([System.String]::Format('$(ErrorText)', 'packages\cef.redist.x86.83.4.2\build\cef.redist.x86.props'))" />
+    <Error Condition="!Exists('packages\CefSharp.Common.83.4.20\build\CefSharp.Common.props')" Text="$([System.String]::Format('$(ErrorText)', 'packages\CefSharp.Common.83.4.20\build\CefSharp.Common.props'))" />
+    <Error Condition="!Exists('packages\CefSharp.Common.83.4.20\build\CefSharp.Common.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\CefSharp.Common.83.4.20\build\CefSharp.Common.targets'))" />
+    <Error Condition="!Exists('packages\CefSharp.WinForms.83.4.20\build\CefSharp.WinForms.props')" Text="$([System.String]::Format('$(ErrorText)', 'packages\CefSharp.WinForms.83.4.20\build\CefSharp.WinForms.props'))" />
+    <Error Condition="!Exists('packages\CefSharp.WinForms.83.4.20\build\CefSharp.WinForms.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\CefSharp.WinForms.83.4.20\build\CefSharp.WinForms.targets'))" />
   </Target>
-  <Import Project="packages\CefSharp.Common.81.3.100\build\CefSharp.Common.targets" Condition="Exists('packages\CefSharp.Common.81.3.100\build\CefSharp.Common.targets')" />
-  <Import Project="packages\CefSharp.WinForms.81.3.100\build\CefSharp.WinForms.targets" Condition="Exists('packages\CefSharp.WinForms.81.3.100\build\CefSharp.WinForms.targets')" />
+  <Import Project="packages\CefSharp.Common.83.4.20\build\CefSharp.Common.targets" Condition="Exists('packages\CefSharp.Common.83.4.20\build\CefSharp.Common.targets')" />
+  <Import Project="packages\CefSharp.WinForms.83.4.20\build\CefSharp.WinForms.targets" Condition="Exists('packages\CefSharp.WinForms.83.4.20\build\CefSharp.WinForms.targets')" />
 </Project>

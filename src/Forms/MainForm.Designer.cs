@@ -27,6 +27,7 @@
             // 
             // volumeTrackBar
             // 
+            this.volumeTrackBar.Enabled = false;
             this.volumeTrackBar.Location = new System.Drawing.Point(116, 6);
             this.volumeTrackBar.Maximum = 100;
             this.volumeTrackBar.Name = "volumeTrackBar";
